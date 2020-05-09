@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gerenciamento de estoque</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
+    <script type="text/javascript">
+    var title = 'INFORMATIVO DE RUPTURAS E ESTOQUES';
+    </script>
+    <script type="text/javascript">
+    var contact = {
+        loja: 'LOJA',
+        promotor: 'PROMOTOR',
+        data: 'DATA',
+        observacoes: 'OBSERVAÇÕES'
+    };
+    </script>
+    <script type="text/javascript">
+    var head = [
+        'PRODUTOS',
+        'RUPTURA',
+        'PRECO',
+        'ESTOQUE',
+        'VALIDADE'
+    ];
+
+    var row = [
+        'MANTEIGA C/SAL POTE 200G',
+        'MANTEIGA C/SAL POTE 500G',
+        'MANTEIGA COM SAL ZL 200G',
+        'MANTEIGA S/SAL POTE 500G',
+        'QJ COALHO F2 6X±2KG',
+        'QJ MINAS PADRAO PED 200G',
+        'QJ MINAS PADRAO PQ ±430G',
+        'QJ MUSSARELA FATIADO 150G',
+        'QJ MUSSARELA PQ ±430G',
+        'QJ PARMESAO FRAC ±300G',
+        'QJ PRATO FATIADO 150G',
+        'QJ PRATO LANCHE PQ ±450G',
+        'QJ PRATO PEDACO 200G',
+        'QJ REINO FATIADO 150G',
+        'QJ REINO FRACIONADO 18X±350G',
+        'QJ REINO LATA F1 ±1KG',
+        'REQUEIJAO CULINARIO 400G',
+        'REQUEIJAO CULINARIO 6X1,8KG',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    ];
+
+    function setId(col, row) {
+        return col + '-' + row;
+    }
+
+    function setupTable() {
+        const table = [];
+
+        for (var i = 0; i < head.length; i++) {
+            var thisCol = [];
+            if (i === 0) {
+                thisCol = thisCol.concat([head[i]], row);
+            } else {
+                thisCol = thisCol.concat(head[i], _.fill(Array(row.length), ''));
+            }
+            table.push(thisCol);
+        }
+
+        makeTableHTML(table);
+    }
+
+    function makeTableHTML(myArray) {
+        var result = '';
+        for (var i = 0; i < myArray.length; i++) {
+            result += `<div class="table-col">`;
+            for (var j = 0; j < myArray[i].length; j++) {
+                var className = 'table-cell box';
+                var inputClassName = '';
+                if (i === 0 || j === 0) {
+                    className += '  header';
+                    inputClassName += '  header';
+                }
+                if (myArray[i][j] === '') {
+                    result += `<div class="${className}"> <input class="${inputClassName}" id="${setId(i, j)}"/></div>`;
+                } else {
+                    result += `<div class="${className}"> <div id="${setId(i, j)}"> ${myArray[i][j]} </div></div>`;
+                }
+            }
+            result += "</div>";
+        }
+        var thisTable = document.createElement('div');
+        thisTable.className = 'table'
+        thisTable.innerHTML = result;
+        document.getElementById('table').appendChild(thisTable);
+    }
+
+    function getJsonBody() {
+        const jsonBody = [{
+            loja: document.getElementById('loja').value,
+            promotor: document.getElementById('promotor').value,
+            data: document.getElementById('data').value,
+            observacoes: document.getElementById('observacoes').value
+        }];
+
+        for (var r = 0; r <= row.length - 1; r++) {
+            const thisObj = {
+                produtos: '',
+                ruptura: '',
+                preço: '',
+                estoque: '',
+                validade: ''
+            };
+            for (var h = 0; h <= head.length - 1; h++) {
+                const element = document.getElementById(`${h}-${r}`);
+                thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? element.value : element.innerHTML;
+            }
+            jsonBody.push(thisObj);
+        }
+        return jsonBody;
+    }
+
+    function sendForm() {
+        var csv = '';
+        const jsonBody = getJsonBody();
+        const uniqueKeys = _.reduce(jsonBody, function(memory, obj) {
+            for (var key in obj) {
+                if (memory.indexOf(key) === -1) memory.push(key)
+            }
+            return memory;
+        }, []);
+
+        csv += uniqueKeys.join(',') + '\n';
+
+        for (var i = 0; i <= jsonBody.length - 1; i++) {
+            for (var j = 0; j <= uniqueKeys.length - 1; j++) {
+                csv += jsonBody[i][uniqueKeys[j]] ? jsonBody[i][uniqueKeys[j]] : '';
+                if (j < uniqueKeys.length - 2) {
+                    csv += ',';
+                }
+            }
+            csv += '\n';
+        }
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const reader = new FileReader();
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('email');
+        const dateObj = new Date();
+        const month = dateObj.getMonth();
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const year = dateObj.getFullYear();
+        const subject = `INFORMATIVO DE RUPTURAS E ESTOQUES - ${day}/${month}/${year}`;
+
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            console.log(base64data)
+            window.open('mailto:' + myParam +
+                '?subject=' + subject +
+                '&body=' + base64data,
+                '_blank');
+            return;
+        };
+    }
+
+    window.onload = () => {
+        setupTable();
+    }
+    </script>
+    <style type="text/css"
+           media="screen">
+    .main-div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+    }
+
+    .contact-box {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .form-box {
+        display: flex;
+    }
+
+    .obs-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+
+    .obs-field {
+        height: 100%;
+        display: flex;
+    }
+
+    .box {
+        min-height: 2rem;
+        text-align: center;
+        font-size: 85%;
+    }
+
+    .cell {
+        max-width: 120px !important;
+    }
+
+    .product {
+        white-space: nowrap !important;
+        max-width: 160px;
+    }
+
+    .card-table {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        margin: 1rem 0;
+    }
+
+    .table {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        padding: 0 0.5rem;
+    }
+
+    .table-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+
+    .table-cell {
+        white-space: nowrap;
+        border: groove 1px orange;
+        background-size: contain;
+        background-color: lightsteelblue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .header {
+        background: #6bb2c9;
+        margin: 0;
+        color: white;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .contact-header {
+
+        padding: 0 2.5rem;
+    }
+
+    .button {
+        display: flex;
+        align-self: flex-end;
+        margin: 1rem auto;
+    }
+
+    .form-bt {
+        background: orange;
+        color: white;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        padding: 0.35rem 0.75rem;
+    }
+
+    h3 {
+        margin: 1rem 0;
+    }
+
+    input {
+        width: 100%;
+        line-height: 1.85;
+        text-align: center;
+    }
+
+    body {
+        font-size: 85%;
+        font-family: "Lucida Console", Monaco, monospace;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="main-div">
+        <div>
+            <h2>
+                <script>
+                    document.write(title)
+                </script>
+            </h2>
+        </div>
+        <div class="contact-box">
+            <div class="form-box box">
+                <div>
+                    <div class="box header contact-header">
+                        <script>
+                            document.write(contact.loja)
+                        </script>
+                    </div>
+                    <div class="box header contact-header">
+                        <script>
+                            document.write(contact.promotor)
+                        </script>
+                    </div>
+                    <div class="box header contact-header">
+                        <script>
+                            document.write(contact.data)
+                        </script>
+                    </div>
+                </div>
+                <div>
+                    <div class="box">
+                        <input id="loja"
+                               type="text" />
+                    </div>
+                    <div class="box">
+                        <input id="promotor"
+                               type="text" />
+                    </div>
+                    <div class="box">
+                        <input id="data"
+                               type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="box obs-box">
+                <div class="box header contact-header">
+                    <script>
+                    document.write(contact.observacoes)
+                    </script>
+                </div>
+                <div class="box obs-field">
+                    <textarea id="observacoes"
+                              resize="none"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card-table"
+             id="table">
+            <div class="button">
+                <button class="form-bt"
+                        onclick="sendForm()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
