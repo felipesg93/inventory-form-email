@@ -147,12 +147,12 @@
         const url = window.URL.createObjectURL(blob);
         const reader = new FileReader();
         const urlParams = new URLSearchParams(window.location.search);
-        const myParam = urlParams.get('email');
+        const myParam = urlParams.get('email') ? urlParams.get('email') : '';
         const dateObj = new Date();
         const month = dateObj.getMonth();
         const day = String(dateObj.getDate()).padStart(2, '0');
         const year = dateObj.getFullYear();
-        const subject = `INFORMATIVO DE RUPTURAS E ESTOQUES - ${day}/${month}/${year}`;
+        const subject = `Informativo De Rupturas E Estoques - ${day}/${month}/${year}`;
 
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
