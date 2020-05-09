@@ -157,7 +157,6 @@
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
             const base64data = reader.result;
-            console.log(base64data)
             window.open('mailto:' + myParam +
                 '?subject=' + subject +
                 '&body=' + base64data,
@@ -206,6 +205,8 @@
         min-height: 2rem;
         text-align: center;
         font-size: 85%;
+        border-radius: 4px;
+        border: #6bb2c9 solid 0.35px;
     }
 
     .cell {
@@ -240,7 +241,7 @@
 
     .table-cell {
         white-space: nowrap;
-        border: groove 1px orange;
+        border: groove 1px #6bb2c9;
         background-size: contain;
         background-color: lightsteelblue;
         display: flex;
