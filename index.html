@@ -323,18 +323,21 @@
 
         for (var r = 0; r <= row.length - 1; r++) {
             const thisObj = {
-                produtos: '',
-                ruptura: '',
-                preco: '',
-                estoque: '',
-                validade: ''
+                'produtos': '',
+                'ruptura': '',
+                'preco': '',
+                'estoque 1': '',
+                'validade 1': '',
+                'estoque 2': '',
+                'validade 2': ''
             };
             for (var h = 0; h <= head.length - 1; h++) {
                 const element = document.getElementById(`${h}-${r}`);
-                thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? element.value : element.innerHTML;
+                thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? element.value : element.innerHTML.trim();
             }
             jsonBody.push(thisObj);
         }
+        jsonBody.splice(1, 1);
         return jsonBody;
     }
 
@@ -353,7 +356,7 @@
         for (var i = 0; i <= jsonBody.length - 1; i++) {
             for (var j = 0; j <= uniqueKeys.length - 1; j++) {
                 csv += jsonBody[i][uniqueKeys[j]] ? jsonBody[i][uniqueKeys[j]] : '';
-                if (j < uniqueKeys.length - 2) {
+                if (j < uniqueKeys.length - 1) {
                     csv += ',';
                 }
             }
