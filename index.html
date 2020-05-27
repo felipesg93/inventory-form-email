@@ -10,6 +10,7 @@
     <script type="text/javascript">
     var contact = {
         loja: 'LOJA',
+        cidade: 'CIDADE',
         promotor: 'PROMOTOR',
         data: 'DATA',
         observacoes: 'OBSERVAÇÕES'
@@ -20,36 +21,241 @@
         'PRODUTOS',
         'RUPTURA',
         'PRECO',
-        'ESTOQUE',
-        'VALIDADE'
+        'ESTOQUE 1',
+        'VALIDADE 1',
+        'ESTOQUE 2',
+        'VALIDADE 2'
     ];
 
-    var row = [
-        'MANTEIGA C/SAL POTE 200G',
-        'MANTEIGA C/SAL POTE 500G',
-        'MANTEIGA COM SAL ZL 200G',
-        'MANTEIGA S/SAL POTE 500G',
-        'QJ COALHO F2 6X±2KG',
-        'QJ MINAS PADRAO PED 200G',
-        'QJ MINAS PADRAO PQ ±430G',
-        'QJ MUSSARELA FATIADO 150G',
-        'QJ MUSSARELA PQ ±430G',
-        'QJ PARMESAO FRAC ±300G',
-        'QJ PRATO FATIADO 150G',
-        'QJ PRATO LANCHE PQ ±450G',
-        'QJ PRATO PEDACO 200G',
-        'QJ REINO FATIADO 150G',
-        'QJ REINO FRACIONADO 18X±350G',
-        'QJ REINO LATA F1 ±1KG',
-        'REQUEIJAO CULINARIO 400G',
-        'REQUEIJAO CULINARIO 6X1,8KG',
-        '',
-        '',
-        '',
-        '',
-        '',
-        ''
-    ];
+    var storeRows = {
+        refrigAssai: [
+            'MANTEIGA C/SAL POTE 200G',
+            'MANTEIGA C/SAL POTE 500G',
+            'MANTEIGA COM SAL ZL 200G',
+            'MANTEIGA S/SAL POTE 200G',
+            'QJ MINAS PADRAO PQ  430G',
+            'QJ REINO FATIADO 150G',
+            'QJ REINO LATA F1  1KG',
+            'QJ REINO PEDACO 200G',
+            'QJ PRATO FATIADO 150G',
+            'QJ PRATO LANCHE PQ  450G',
+            'QJ PRATO PEDACO 200G',
+            'QJ PARMESAO FRAC  300G',
+            'QJ MUSSARELA FATIADO 150G',
+            'QJ MUSSARELA FATIADO 500G',
+            'QJ MUSSARELA PQ  430G'
+        ],
+        secaAssai: [
+            'LEITE DESNATADO 1L',
+            'LEITE INTEGRAL 1L',
+            'LEITE SEMIDESNAT. 1L',
+            'LEITE ZERO LACTOSE 1L',
+            'PIRAKIDS CHOCOLATE 1L',
+            'PIRAKIDS CHOCOLATE 200ML',
+            'PIRAKIDS ZL CHOCOLATE 200ML',
+            'QLC BANANA 200ML',
+            'QLC BANANA 500ML',
+            'QLC F.VERMELH ZA 500ML',
+            'QLC MAMA/MACA ZA 500ML',
+            'QLC MAMAO/MACA 200ML',
+            'QLC MAMAO/MACA 500ML',
+            'QLC MORANG/BANAN 200ML',
+            'WHEY ZL BANANA 250ML',
+            'WHEY ZL CACAU 250ML',
+            'WHEY ZL F VERMEL 250ML',
+            'LEITE COND LIGHT 395G',
+            'LEITE CONDENSADO 395G',
+            'LEITE CONDENSADO BAG 2,5KG',
+            'LEITE CONDENSADO ZL 395G',
+            'CREME CHANTILLY 200G',
+            'CREME DE LEITE 1,03KG',
+            'CREME DE LEITE 200G',
+            'CREME DE LEITE ZL 200G',
+            'CREME LEITE GOURMET 200G',
+            'LEITE PO DES I 600G POUCH',
+            'LEITE PO INT 800G POUCH',
+            'LEITE PO INTEGRAL 10X1KG',
+            'LEITE PO INTEGRAL 200G',
+            'ALMOND BR  ZA BAUN 250ML',
+            'ALMOND BREEZE BAUN 1L',
+            'ALMOND BREEZE CHOC 1L',
+            'ALMOND BREEZE ORIG 1L'
+        ],
+        refrigAtacadao: [
+            'MANTEIGA C/SAL POTE 200G',
+            'MANTEIGA C/SAL POTE 500G',
+            'MANTEIGA COM SAL ZL 200G',
+            'MANTEIGA S/SAL POTE 500G',
+            'REQUEIJAO CULINARIO 400G',
+            'REQUEIJAO CULINARIO 6X1,8KG',
+            'QJ COALHO ±700G',
+            'QJ COALHO F2 ±2KG',
+            'QJ MINAS PADRAO PED 200G',
+            'QJ MINAS PADRAO PQ ±430G',
+            'QJ REINO FATIADO 150G',
+            'QJ REINO FRACIONADO ±350G',
+            'QJ REINO LATA F1 ±1KG',
+            'QJ REINO PEDACO 200G',
+            'QJ PRATO FATIADO 150G',
+            'QJ PRATO LANCHE PQ ±450G',
+            'QJ PRATO PEDACO 200G',
+            'QJ PARMESAO FRAC ±300G',
+            'QJ MUSSARELA FATIADO 150G',
+            'QJ MUSSARELA FATIADO 1kg',
+            'QJ MUSSARELA FATIADO 500g',
+            'QJ MUSSARELA PQ ±430G',
+            'QJ MUSS TRANÇA PQ ±400G'
+        ],
+        secaAtacadao: [
+            'LEITE DESNATADO 1L',
+            'LEITE INTEGRAL 1L',
+            'LEITE SEMIDESNAT. 1L',
+            'LEITE ZERO LACTOSE 1L',
+            'PIRAKIDS CHOCOLATE 1L',
+            'PIRAKIDS CHOCOLATE 200ML',
+            'PIRAKIDS SCHOOL CHOC 200ML',
+            'PIRAKIDS ZL CHOCOLATE 200ML',
+            'QLC BANANA 200ML',
+            'QLC F.VERMELH ZA 500ML',
+            'QLC MAMA/MACA ZA 500ML',
+            'QLC MAMAO/MACA 200ML',
+            'WHEY ZL BANANA 250ML',
+            'WHEY ZL BAUNILHA 250ML',
+            'WHEY ZL CACAU 250ML',
+            'WHEY ZL F VERMEL 250ML',
+            'LEITE COND LIGHT 395G',
+            'LEITE CONDENSADO 395G',
+            'LEITE CONDENSADO BAG 2,5KG',
+            'LEITE CONDENSADO ZL 395G',
+            'CREME DE LEITE 1,03KG',
+            'CREME DE LEITE 200G',
+            'CREME DE LEITE ZL 200G',
+            'COMPOSTO LAC OTIMO 200G',
+            'LEITE PO INT 800G POUCH',
+            'LEITE PO INT I 800G POUCH',
+            'LEITE PO INTEGRAL 200G',
+            'ALMOND BREEZE  ZA BAUN 250ML',
+            'ALMOND BREEZE  ZA CHOC 250ML',
+            'ALMOND BREEZE BAUN 1L',
+            'ALMOND BREEZE CHOC 1L',
+            'ALMOND BREEZE ORIG 1L',
+            'LEITE MOLICO 1L',
+            'LEITE NIHNO INT. ZERO LAC. 1L',
+            'LEITE NINHO INTEGRAL 1L',
+            'LEITE NINHO SEMI 1L'
+        ],
+        refrigMaxxi: [
+            'QJ MINAS PADRAO PED 200G',
+            'QJ MINAS PADRAO PQ ±430G',
+            'QJ REINO FATIADO 150G',
+            'QJ REINO PEDACO 200G',
+            'QJ REINO LATA 1KG',
+            'QJ PRATO FATIDADO 150G',
+            'QJ PRATO PEDACO 200G',
+            'QJ PARMESAO FRAC 300G',
+            'QJ MUSSARELA FATIADO 150G',
+            'QJ MUSSARELA FATIADO 1KG',
+            'QJ MUSSARELA PEDACO 200G',
+            'QJ MUSSARELAF4 ±4KG'
+        ],
+        secaMaxxi: [
+            'LEITE DESNATADO  1L',
+            'LEITE INTEGRAL  1L',
+            'LEITE SEMIDESNAT.  1L ',
+            'LEITE ZERO LACTOSE 1L',
+            'BL PIRAKIDS CHOCOLATE 1L',
+            'BL PIRAKIDS CHOCOLATE 200ML',
+            'BL PIRAKIDS ZL CHOCOLATE 200ML',
+            ' QUINOA MEIO AMARGO 200ML',
+            ' QUINOA MORANG/BANAN 200ML',
+            'WHEY ZL BANANA 250ML',
+            'WHEY ZL CACAU 250ML',
+            'LEITE CONDENSADO  395G',
+            'LEITE CONDENSADO BAG 4X2,5KG',
+            'LEITE CONDENSADO ZL 395G',
+            'CREME DE LEITE  1,03KG',
+            'CREME DE LEITE  200G',
+            'CREME DE LEITE GOURMET 200G',
+            'CREME DE LEITE ZL 200G',
+            'LEITE PO DES 200G',
+            'LEITE PO DES I  600G POUCH',
+            'LEITE PO INT  800G POUCH',
+            'LEITE PO INT INST 800G POUCH',
+            'LEITE PO INT INST. 200G',
+            'LEITE PO INTEGRAL 200G',
+            'ALMOND BREEZE  CHOC 250ML',
+            'ALMOND BREEZE  ORIG 1L',
+            'ALMOND BREEZE  ZA CHOC 250ML',
+            'ALMOND BREEZE ZA ORIG 1L',
+            'LEITE MOLICO 1L',
+            'LEITE NINHO INTEGRAL 1L',
+            'LEITE NINHO SEMI 1L',
+            'LEITE NINHO SEMI ZERO LAC 1L'
+        ],
+        estoqueSams: [
+            'MANTEIGA C/SAL POTE 500G',
+            'QJ MUSSARELA FATIADO 150G',
+            'QJ PRATO FATIADO 150G',
+            'QJ REINO LATA F1 ±1KG',
+            'LEITE DESNATADO 1L',
+            'LEITE INTEGRAL 1L',
+            'LEITE SEMIDESNAT. 1L',
+            'LEITE ZERO LACTOSE 1L',
+            'PIRAKIDS CHOCOLATE 1L',
+            'WHEY ZL BANANA 250ML',
+            'WHEY ZL CACAU 250ML',
+            'WHEY ZL F VERMEL 250ML',
+            'LEITE CONDENSADO 395G',
+            'LEITE CONDENSADO ZL 395G',
+            'CREME DE LEITE 200G',
+            'CREME DE LEITE ZL 200G',
+            'LEITE PO DES I 600G POUCH',
+            'LEITE PO INT 800G POUCH',
+            'LEITE PO INT I 800G POUCH',
+            'ALMOND BREEZE BAUN 1L',
+            'ALMOND BREEZE CHOC 1L',
+            'ALMOND BREEZE ORIG 1L',
+            'LEITE MOLICO 1L',
+            'LEITE NINHO INTEGRAL 1L',
+            'LEITE NINHO SEMI 1L',
+            'LEITE NINHO SEMI ZERO LAC 1L'
+        ],
+        estoqueGpa: [
+            'L. INT. PIRAKIDS CRESCER 1L',
+            'L. INT. PIRAKIDS CRESCER ZL 1L',
+            'LEITE SEMIDESNAT. 1L',
+            'LEITE ZERO LACTOSEL 1L',
+            'PIRAKIDS CHOCOLATE 1L',
+            'PIRAKIDS CHOCOLATE 200ML',
+            'PIRAKIDS ZL CHOCOLATE 200ML',
+            'QLC BANANA 200ML',
+            'QLC MAMAO/MAC ZA 200ML',
+            'QLC MAMAO/MACA 200ML',
+            'WHEY ZL BANANA 250ML',
+            'WHEY ZL BAUNILHA 250ML',
+            'WHEY ZL CACAU 250ML',
+            'WHEY ZL F VERMEL 250ML',
+            'LEITE COND LIGHT 395G',
+            'LEITE CONDENSADO 395G',
+            'LEITE CONDENSADO ZL 395G',
+            'CREME DE LEITE 200G',
+            'CREME DE LEITE ZL 200G',
+            'CREME LEITE GOURMET 200G',
+            'LEITE PO DES I 600G POUCH',
+            'LEITE PO INT 800G POUCH',
+            'LEITE PO INT I 800G POUCH',
+            'LEITE PO INTEGRAL 200G',
+            'ALMOND BREEZE BAUN 1L',
+            'ALMOND BREEZE CHOC 1L',
+            'ALMOND BREEZE ORIG 1L',
+            'LEITE MOLICO 1L',
+            'LEITE MOLICO ZERO LAC 1L',
+            'LEITE NINHO INTEGRAL 1L',
+            'LEITE NINHO SEMI 1L'
+        ]
+    };
+
+    var row = [];
 
     function setId(col, row) {
         return col + '-' + row;
@@ -57,6 +263,16 @@
 
     function setupTable() {
         const table = [];
+        const urlParams = new URLSearchParams(window.location.search);
+        const myStore = urlParams.get('store') ? urlParams.get('store') : undefined;
+
+        if (myStore && storeRows[myStore]) {
+            row = storeRows[myStore];
+        } else {
+            for (var i = 0; i < 25; i++) {
+                row.push('');
+            }
+        }
 
         for (var i = 0; i < head.length; i++) {
             var thisCol = [];
@@ -99,6 +315,7 @@
     function getJsonBody() {
         const jsonBody = [{
             loja: document.getElementById('loja').value,
+            cidade: document.getElementById('cidade').value,
             promotor: document.getElementById('promotor').value,
             data: document.getElementById('data').value,
             observacoes: document.getElementById('observacoes').value
@@ -108,7 +325,7 @@
             const thisObj = {
                 produtos: '',
                 ruptura: '',
-                preço: '',
+                preco: '',
                 estoque: '',
                 validade: ''
             };
@@ -144,23 +361,17 @@
         }
 
         const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
         const reader = new FileReader();
-        const urlParams = new URLSearchParams(window.location.search);
-        const myParam = urlParams.get('email') ? urlParams.get('email') : '';
-        const dateObj = new Date();
-        const month = dateObj.getMonth();
-        const day = String(dateObj.getDate()).padStart(2, '0');
-        const year = dateObj.getFullYear();
-        const subject = `Informativo De Rupturas E Estoques - ${day}/${month}/${year}`;
 
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
             const base64data = reader.result;
-            window.open('mailto:' + myParam +
-                '?subject=' + subject +
-                '&body=' + base64data,
-                '_blank');
+            document.getElementById(`base64-input`).value = base64data;
+            document.getElementById(`form-loja`).value = jsonBody[0].loja;
+            document.getElementById(`form-cidade`).value = jsonBody[0].cidade;
+            document.getElementById(`form-promotor`).value = jsonBody[0].promotor;
+            document.getElementById(`form-data`).value = jsonBody[0].data;
+            document.getElementById(`submit-bt`).click();
             return;
         };
     }
@@ -315,6 +526,11 @@
                     </div>
                     <div class="box header contact-header">
                         <script>
+                            document.write(contact.cidade)
+                        </script>
+                    </div>
+                    <div class="box header contact-header">
+                        <script>
                             document.write(contact.promotor)
                         </script>
                     </div>
@@ -330,6 +546,10 @@
                                type="text" />
                     </div>
                     <div class="box">
+                        <input id="cidade"
+                               type="text" />
+                    </div>
+                    <div class="box">
                         <input id="promotor"
                                type="text" />
                     </div>
@@ -342,7 +562,7 @@
             <div class="box obs-box">
                 <div class="box header contact-header">
                     <script>
-                    document.write(contact.observacoes)
+                        document.write(contact.observacoes)
                     </script>
                 </div>
                 <div class="box obs-field">
@@ -359,6 +579,27 @@
             </div>
         </div>
     </div>
+    <form hidden
+          action="https://formspree.io/xknqnyob"
+          method="POST">
+        <input id="form-loja"
+               type="text"
+               name="loja">
+        <input id="form-cidade"
+               type="text"
+               name="cidade">
+        <input id="form-promotor"
+               type="text"
+               name="promotor">
+        <input id="form-data"
+               type="text"
+               name="data">
+        <input id="base64-input"
+               type="text"
+               name="message">
+        <button id="submit-bt"
+                type="submit"></button>
+    </form>
 </body>
 
 </html>
