@@ -265,6 +265,7 @@
         const table = [];
         const urlParams = new URLSearchParams(window.location.search);
         const myStore = urlParams.get('store') ? urlParams.get('store') : undefined;
+        document.getElementById('data').value = new Date().toISOString().slice(0, 10);
 
         if (myStore && storeRows[myStore]) {
             row = storeRows[myStore];
@@ -299,7 +300,7 @@
                     inputClassName += '  header';
                 }
                 if (myArray[i][j] === '') {
-                    result += `<div class="${className}"> <input class="${inputClassName}" id="${setId(i, j)}"/></div>`;
+                    result += `<div class="${className}"> <input class="${inputClassName}" ${getType(i)} id="${setId(i, j)}"/></div>`;
                 } else {
                     result += `<div class="${className}"> <div id="${setId(i, j)}"> ${myArray[i][j]} </div></div>`;
                 }
@@ -312,17 +313,28 @@
         document.getElementById('table').appendChild(thisTable);
     }
 
+    function getType(index) {
+        switch (index) {
+            case 2:
+                return `type="number" min="0.00" max="10000.00" step="0.01" value="0.00"`;
+            case 4:
+            case 6:
+                return `type="date"`;
+            default:
+                return `type="text"`;
+        }
+    }
+
     function getJsonBody() {
-        const jsonBody = [{
-            loja: document.getElementById('loja').value,
-            cidade: document.getElementById('cidade').value,
-            promotor: document.getElementById('promotor').value,
-            data: document.getElementById('data').value,
-            observacoes: document.getElementById('observacoes').value
-        }];
+        const jsonBody = [];
 
         for (var r = 0; r <= row.length - 1; r++) {
             const thisObj = {
+                'loja': document.getElementById('loja').value,
+                'cidade': document.getElementById('cidade').value,
+                'promotor': document.getElementById('promotor').value,
+                'data': document.getElementById('data').value,
+                'observacoes': document.getElementById('observacoes').value,
                 'produtos': '',
                 'ruptura': '',
                 'preco': '',
@@ -333,12 +345,16 @@
             };
             for (var h = 0; h <= head.length - 1; h++) {
                 const element = document.getElementById(`${h}-${r}`);
-                thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? element.value : element.innerHTML.trim();
+                thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? cleanValue(element.value.trim()) : element.innerHTML.trim();
             }
             jsonBody.push(thisObj);
         }
-        jsonBody.splice(1, 1);
+        jsonBody.splice(0, 1);
         return jsonBody;
+    }
+
+    function cleanValue(value) {
+        return value.includes(',') ? `"${value}"` : value.includes('.') ? `"${value.replace('.', ',')}"` : value;
     }
 
     function sendForm() {
@@ -365,15 +381,14 @@
 
         const blob = new Blob([csv], { type: 'text/csv' });
         const reader = new FileReader();
-
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
             const base64data = reader.result;
             document.getElementById(`base64-input`).value = base64data;
-            document.getElementById(`form-loja`).value = jsonBody[0].loja;
-            document.getElementById(`form-cidade`).value = jsonBody[0].cidade;
-            document.getElementById(`form-promotor`).value = jsonBody[0].promotor;
-            document.getElementById(`form-data`).value = jsonBody[0].data;
+            document.getElementById(`form-loja`).value = document.getElementById('loja').value;
+            document.getElementById(`form-cidade`).value = document.getElementById('cidade').value;
+            document.getElementById(`form-promotor`).value = document.getElementById('promotor').value;
+            document.getElementById(`form-data`).value = document.getElementById('data').value;
             document.getElementById(`submit-bt`).click();
             return;
         };
@@ -558,7 +573,8 @@
                     </div>
                     <div class="box">
                         <input id="data"
-                               type="text" />
+                               format="DD MM YYYY"
+                               type="date" />
                     </div>
                 </div>
             </div>
