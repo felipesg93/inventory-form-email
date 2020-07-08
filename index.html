@@ -4,6 +4,8 @@
 <head>
     <title>Gerenciamento de estoque</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <pre id="response"></pre>
     <script type="text/javascript">
     var title = 'INFORMATIVO DE RUPTURAS E ESTOQUES';
     </script>
@@ -50,7 +52,7 @@
             'LEITE INTEGRAL 1L',
             'LEITE SEMIDESNAT. 1L',
             'LEITE ZERO LACTOSE 1L',
-             'LEITE MOLICO 1L',
+            'LEITE MOLICO 1L',
             'LEITE NIHNO INT. ZERO LAC. 1L',
             'LEITE NINHO INTEGRAL 1L',
             'LEITE NINHO SEMI 1L',
@@ -363,6 +365,15 @@
         return value.includes(',') ? `"${value}"` : value.includes('.') ? `"${value.replace('.', ',')}"` : value;
     }
 
+    function checkCountry() {
+        $.get("https://ipinfo.io", function(response) {
+            const res = response.country.toLowerCase();
+            if (res.includes('br')) {
+                sendForm();
+            }
+        }, "jsonp");
+    }
+
     function sendForm() {
         var csv = '';
         const jsonBody = getJsonBody();
@@ -404,8 +415,7 @@
         setupTable();
     }
     </script>
-    <style type="text/css"
-           media="screen">
+    <style type="text/css" media="screen">
     .main-div {
         display: flex;
         flex-direction: column;
@@ -566,21 +576,16 @@
                 </div>
                 <div>
                     <div class="box">
-                        <input id="loja"
-                               type="text" />
+                        <input id="loja" type="text" />
                     </div>
                     <div class="box">
-                        <input id="cidade"
-                               type="text" />
+                        <input id="cidade" type="text" />
                     </div>
                     <div class="box">
-                        <input id="promotor"
-                               type="text" />
+                        <input id="promotor" type="text" />
                     </div>
                     <div class="box">
-                        <input id="data"
-                               format="DD MM YYYY"
-                               type="date" />
+                        <input id="data" format="DD MM YYYY" type="date" />
                     </div>
                 </div>
             </div>
@@ -591,39 +596,23 @@
                     </script>
                 </div>
                 <div class="box obs-field">
-                    <textarea id="observacoes"
-                              resize="none"></textarea>
+                    <textarea id="observacoes" resize="none"></textarea>
                 </div>
             </div>
         </div>
-        <div class="card-table"
-             id="table">
+        <div class="card-table" id="table">
             <div class="button">
-                <button class="form-bt"
-                        onclick="sendForm()">Enviar</button>
+                <button class="form-bt" onclick="checkCountry()">Enviar</button>
             </div>
         </div>
     </div>
-    <form hidden
-          action="https://formspree.io/xknqnyob"
-          method="POST">
-        <input id="form-loja"
-               type="text"
-               name="loja">
-        <input id="form-cidade"
-               type="text"
-               name="cidade">
-        <input id="form-promotor"
-               type="text"
-               name="promotor">
-        <input id="form-data"
-               type="text"
-               name="data">
-        <input id="base64-input"
-               type="text"
-               name="message">
-        <button id="submit-bt"
-                type="submit"></button>
+    <form hidden action="https://formspree.io/xknqnyob" method="POST">
+        <input id="form-loja" type="text" name="loja">
+        <input id="form-cidade" type="text" name="cidade">
+        <input id="form-promotor" type="text" name="promotor">
+        <input id="form-data" type="text" name="data">
+        <input id="base64-input" type="text" name="message">
+        <button id="submit-bt" type="submit"></button>
     </form>
 </body>
 
