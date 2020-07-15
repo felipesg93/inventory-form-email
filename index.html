@@ -431,7 +431,7 @@
             document.getElementById(`form-cidade`).value = document.getElementById('cidade').value;
             document.getElementById(`form-promotor`).value = document.getElementById('promotor').value;
             document.getElementById(`form-data`).value = document.getElementById('data').value;
-            document.getElementById(`form-data`).action = $ { { secrets.FORMSPREE_KEY } };
+            document.getElementById(`form-data`).action = process.env.FORMSPREE_KEY;
             document.getElementById(`submit-bt`).click();
             return;
         };
