@@ -431,6 +431,7 @@
             document.getElementById(`form-cidade`).value = document.getElementById('cidade').value;
             document.getElementById(`form-promotor`).value = document.getElementById('promotor').value;
             document.getElementById(`form-data`).value = document.getElementById('data').value;
+            document.getElementById(`form-data`).action = $ { { secrets.FORMSPREE_KEY } };
             document.getElementById(`submit-bt`).click();
             return;
         };
@@ -631,7 +632,7 @@
             </div>
         </div>
     </div>
-    <form hidden action="secrets.FORMSPREE_KEY" method="POST">
+    <form hidden method="POST">
         <input id="form-loja" type="text" name="loja">
         <input id="form-cidade" type="text" name="cidade">
         <input id="form-promotor" type="text" name="promotor">
