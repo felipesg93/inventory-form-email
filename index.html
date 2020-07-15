@@ -244,7 +244,7 @@
             'ALMOND BREEZE ORIG 1L',
             'IMUNODAY ORIG.',
             'IMUNODAY CHOC C. AVEIA',
-            'IMUNODAY CHOC Z. LAC.',                      
+            'IMUNODAY CHOC Z. LAC.',
             'LEITE MOLICO 1L',
             'LEITE NINHO INTEGRAL 1L',
             'LEITE NINHO SEMI 1L',
@@ -630,7 +630,7 @@
             </div>
         </div>
     </div>
-    <form hidden action="https://formspree.io/xknqnyob" method="POST">
+    <form hidden action="${{secrets.FORMSPREE_KEY}}" method="POST">
         <input id="form-loja" type="text" name="loja">
         <input id="form-cidade" type="text" name="cidade">
         <input id="form-promotor" type="text" name="promotor">
