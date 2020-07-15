@@ -402,6 +402,7 @@
     function sendForm() {
         var csv = '';
         const jsonBody = getJsonBody();
+        const urlParams = new URLSearchParams(window.location.search);
         const uniqueKeys = _.reduce(jsonBody, function(memory, obj) {
             for (var key in obj) {
                 if (memory.indexOf(key) === -1) memory.push(key)
@@ -431,7 +432,7 @@
             document.getElementById(`form-cidade`).value = document.getElementById('cidade').value;
             document.getElementById(`form-promotor`).value = document.getElementById('promotor').value;
             document.getElementById(`form-data`).value = document.getElementById('data').value;
-            document.getElementById(`form-data`).action = process.env.FORMSPREE_KEY;
+            document.getElementById(`form-spree`).action += urlParams.get('token') ? urlParams.get('token') : undefined;;
             document.getElementById(`submit-bt`).click();
             return;
         };
@@ -632,7 +633,7 @@
             </div>
         </div>
     </div>
-    <form hidden method="POST">
+    <form id="form-spree" action="https://formspree.io/" hidden method="POST">
         <input id="form-loja" type="text" name="loja">
         <input id="form-cidade" type="text" name="cidade">
         <input id="form-promotor" type="text" name="promotor">
