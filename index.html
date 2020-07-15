@@ -390,12 +390,13 @@
     }
 
     function checkCountry() {
-        $.get("https://ipinfo.io", function(response) {
-            const res = response.country.toLowerCase();
-            if (res.includes('br')) {
-                sendForm();
-            }
-        }, "jsonp");
+        sendForm();
+        // $.get("https://ipinfo.io", function(response) {
+        //     const res = response.country.toLowerCase();
+        //     if (res.includes('br')) {
+        //         sendForm();
+        //     }
+        // }, "jsonp");
     }
 
     function sendForm() {
