@@ -386,7 +386,7 @@
     }
 
     function cleanValue(value) {
-        return value.includes(',') ? `"${value.replace(',', '')}}"` : value.includes('.') ? `"${value.replace('.', ',')}"` : value;
+        return value.includes(',') ? `"${value.replace(',', '.')}}"` : value;
     }
 
     function checkCountry() {
