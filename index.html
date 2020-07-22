@@ -392,12 +392,18 @@
                 };
                 for (var h = 0; h <= head.length - 1; h++) {
                     const element = document.getElementById(`${h}-${r}`);
-                    thisObj[head[h].toLowerCase()] = element.tagName.toLowerCase() === 'input' ? element.value.trim() : element.innerHTML.trim();
+                    thisObj[head[h].toLowerCase()] = cleanValue(element, head[h])
                 }
                 jsonBody.push(thisObj);
             }
             jsonBody.splice(0, 1);
             return jsonBody;
+        }
+
+        function cleanValue(element, col) {
+            let value = element.tagName.toLowerCase();
+            value = value === 'input' ? element.value.trim() : element.innerHTML.trim();
+            return value.includes(',') && col.toLowerCase() === 'produtos' ? `"${value.replace(',', '.')}"` : value;
         }
 
         function sendForm() {
