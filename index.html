@@ -400,10 +400,6 @@
             return jsonBody;
         }
 
-        function checkCountry() {
-            sendForm();
-        }
-
         function sendForm() {
             var csv = '';
             const jsonBody = getJsonBody();
@@ -618,7 +614,7 @@
                  id="table">
                 <div class="button">
                     <button class="form-bt"
-                            onclick="checkCountry()">Enviar</button>
+                            onclick="sendForm()">Enviar</button>
                 </div>
             </div>
         </div>
