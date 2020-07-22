@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>Gerenciamento de estoque</title>
+        <title>NTS Representações</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <pre id="response"></pre>
@@ -403,7 +403,7 @@
         function cleanValue(element, col) {
             let value = element.tagName.toLowerCase();
             value = value === 'input' ? element.value.trim() : element.innerHTML.trim();
-            return value.includes(',') && col.toLowerCase() === 'produtos' ? `"${value.replace(',', '.')}"` : value;
+            return value.includes('.') && col.toLowerCase() === 'preco' ? `"${value.replace('.', ',')}"` : value;
         }
 
         function sendForm() {
