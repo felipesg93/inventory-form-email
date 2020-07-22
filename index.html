@@ -386,16 +386,11 @@
     }
 
     function cleanValue(value) {
-        return value.includes(',') ? `"${value}"` : value.includes('.') ? `"${value.replace('.', ',')}"` : value;
+        return value.includes(',') ? `"${value.replace(',', '')}}"` : value.includes('.') ? `"${value.replace('.', ',')}"` : value;
     }
 
     function checkCountry() {
-        $.get("https://ipinfo.io", function(response) {
-            const res = response.country.toLowerCase();
-            if (res.includes('br')) {
-                sendForm();
-            }
-        }, "jsonp");
+        sendForm();
     }
 
     function sendForm() {
